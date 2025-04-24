@@ -71,6 +71,7 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
       setErrorMsg("Wszystkie pola są wymagane.");
       return;
     }
+    console.log("Selected customer:", selectedCustomer);
     //sprawdzenie czy usługa została wybrana
     if (servicesList.length === 0 || servicesList.some((serv) => !serv.selectedService)) {
       setErrorMsg("Wybierz przynajmniej jedną usługę.");
@@ -120,9 +121,12 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
       employee: selectedEmployee,
       startTime: `${formData.date}T${formData.startTime.slice(0, 5)}`, 
       endTime: `${formData.date}T${formData.endTime.slice(0, 5)}`,
-      services: servicesList.filter((serv) => serv.selectedService).map((serv) => serv.selectedService),
+      services: servicesList.filter((serv) => serv.selectedService).map((serv) => 
+      ({
+        name: serv.selectedService,
+      })),
       color: formData.color,
-      status: "upcoming",
+      status: "nadchodząca",
     };
 
     try {
@@ -170,7 +174,6 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
     } catch (error) {
       console.error("Błąd podczas dodawania wydarzenia:", error);
     }
-    window.location.reload();
   };
   const handleEmployeeSelect = (emp) => {
     setSelectedEmployee(`${emp.name} ${emp.surname}`);
@@ -187,7 +190,7 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
         ? { 
             ...serv, 
             duration: selectedServ.duration,
-            selectedService: `${selectedServ.name} ${selectedServ.duration} min`, 
+            selectedService: selectedServ.name, 
             servSearchTerm: "",
         } 
         : serv

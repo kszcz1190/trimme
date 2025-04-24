@@ -40,19 +40,19 @@ function Scheduler() {
         const appointmentsCollection = collection(firestoreDatabase, "appointments");
   
         // 🔍 Dodanie filtru statusu do zapytania
-        const q = query(appointmentsCollection, where("status", "==", "upcoming"));
+        const q = query(appointmentsCollection, where("status", "!=", "odwołana"));
         const querySnapshot = await getDocs(q);
   
         const eventsList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
-          title: `${doc.data().customer} - ${doc.data().services.join(", ")} do: ${doc.data().employee}`,
+          title: `${doc.data().customer} - ${doc.data().services.map(s=>s.name).join(", ")} do: ${doc.data().employee}`,
           start: doc.data().startTime,
           end: doc.data().endTime,
           color: doc.data().color,
           calendarId: "work",
           status: doc.data().status,
-          main_description: doc.data().description,
-          extra_description: doc.data().extraDescription,
+          mainDescription: doc.data().mainDescription,
+          extraDescription: doc.data().extraDescription,
           extendedProps: {
             customer_id: doc.data().customer,
             employee_id: doc.data().employee,
@@ -97,8 +97,8 @@ function Scheduler() {
       employee: existingEvent?.extendedProps?.employee_id || "",
       services: existingEvent?.extendedProps?.service_id || [],
       status: existingEvent?.status || "",
-      main_description: existingEvent?.main_description || "",
-      extra_description: existingEvent?.extra_description || "",
+      mainDescription: existingEvent?.mainDescription || "",
+      extraDescription: existingEvent?.extraDescription || "",
 
     };
   
@@ -131,8 +131,8 @@ function Scheduler() {
       customer_id: existingEvent?.extendedProps?.customer_id || "",
       service_id: existingEvent?.extendedProps?.service_id || [],
       status: existingEvent?.status || "",
-      main_description: existingEvent?.main_description || "",
-      extra_description: existingEvent?.extra_description || "",
+      mainDescription: existingEvent?.mainDescription || "",
+      extraDescription: existingEvent?.extraDescription || "",
     };
   
     console.log("Zaktualizowane dane wydarzenia:", updatedEvent);

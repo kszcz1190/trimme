@@ -2,3 +2,7 @@
 ./trimme/node_modules
 ./trimme/package-lock.json
 ./trimme/package.json
+
+./node_modules
+./package-lock.json
+./package.json

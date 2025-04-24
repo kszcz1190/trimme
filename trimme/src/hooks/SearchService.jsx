@@ -33,7 +33,7 @@ const SearchService = () => {
     const search = servSearchTerm.toLowerCase();
     return (
       service.name?.toLowerCase().includes(search) ||
-      service.description?.toLowerCase().includes(search)
+      service.description?.toLowerCase().includes(search) 
     );
   });
   return { services: filteredServices, servSearchTerm, setServSearchTerm, setServices };

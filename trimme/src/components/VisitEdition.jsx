@@ -174,7 +174,7 @@ export default function VisitEdition({selectedEvent, setEvents, setVisitPreview,
                     {servicesList.map((serv,index) => (
                         <div key={serv.id} className="flex flex-row gap-2 mb-2">
                             <input type="text" 
-                            value={serv.selectedService} 
+                            value={serv.selectedService.name || serv.serviceSearchTerm} 
                             onChange={(e) => handleServiceChange(serv.id, e.target.value)}
                             onFocus={() => setIsDropdownServOpen(serv.id)}
                             onBlur={() => setTimeout(() => setIsDropdownServOpen(null), 200)}

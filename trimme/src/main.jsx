@@ -11,6 +11,7 @@ import Timetable from "./components/Timetable.jsx";
 import Services from "./components/Services.jsx";
 import Products from "./components/Products.jsx";
 import VisitsHistory from "./components/VisitsHistory.jsx";
+import VisitDetails from "./components/VisitDetails.jsx";
 
 
 createRoot(document.getElementById("root")).render(
@@ -25,6 +26,8 @@ createRoot(document.getElementById("root")).render(
       <Route path="/timetable" element={<Timetable />} />
       <Route path="/services" element={<Services />} />
       <Route path="/history" element={<VisitsHistory />} />
+      <Route path="/history/:id" element={<VisitDetails />} />
+      {/* Dodaj inne trasy tutaj */}
     </Routes>
   </Router>
 );

@@ -27,6 +27,7 @@ export default function VisitFinalization({ selectedEvent,setFinalizeEvent,setEv
 
     const [servicesList, setServicesList] = useState([{ id: Date.now(), serviceSearchTerm: "", selectedService: "", endPrice: 0 }]);
     const [isDropdownServOpen, setIsDropdownServOpen] = useState(null); // Który dropdown jest otwarty
+    const [paymentType, setPaymentType] = useState("cash");
 
     useEffect(() => {
         // Obliczanie całkowitej kwoty usług
@@ -83,7 +84,7 @@ export default function VisitFinalization({ selectedEvent,setFinalizeEvent,setEv
             prod.id === id 
             ? { 
                 ...prod, 
-                selectedProduct: `${selectedProd.name} ${selectedProd.price} zł (${selectedProd.capacity} ml)`, 
+                selectedProduct: selectedProd.name, 
                 productSearchTerm: "",
                 price: selectedProd.price // Aktualizowanie ceny
             } 
@@ -97,7 +98,7 @@ export default function VisitFinalization({ selectedEvent,setFinalizeEvent,setEv
             serv.id === id 
             ? { 
                 ...serv, 
-                selectedService: `${selectedServ.name} ${selectedServ.startPrice} - ${selectedServ.endPrice} zł`, 
+                selectedService: selectedServ.name, 
                 serviceSearchTerm: "",
                 endPrice: selectedServ.endPrice // Aktualizowanie ceny
             } 
@@ -124,7 +125,7 @@ export default function VisitFinalization({ selectedEvent,setFinalizeEvent,setEv
         if (window.confirm(`Czy na pewno chcesz finalizować wizytę ${selectedEvent.title}?`)) {
             try {
                 await updateDoc(doc(firestoreDatabase, "appointments", selectedEvent.id), {
-                    status: "completed",
+                    status: "zakończona",
                     services: servicesList
                       .filter((serv) => serv.selectedService)
                       .map((serv) => ({
@@ -137,7 +138,7 @@ export default function VisitFinalization({ selectedEvent,setFinalizeEvent,setEv
                         name: prod.selectedProduct,
                         price: prod.price
                       })),
-                    paymentType: e.target[0].value,
+                    paymentType,
                     servicesTotal,
                     productsTotal,
                     totalAmount,
@@ -146,7 +147,7 @@ export default function VisitFinalization({ selectedEvent,setFinalizeEvent,setEv
                   
                 setEvents((prevEvents) =>
                     prevEvents.map((ev) =>
-                        ev.id === selectedEvent.id ? { ...ev, status: "completed" } : ev
+                        ev.id === selectedEvent.id ? { ...ev, status: "zakończona" } : ev
                     )
                 );
                 setFinalizeEvent(false);
@@ -338,9 +339,11 @@ export default function VisitFinalization({ selectedEvent,setFinalizeEvent,setEv
     </div>
     <div className="flex flex-row">
         <label htmlFor="" className="font-bold mr-2">Rodzaj płatności</label>
-        <select name="" id="">
-            <option value="cash">Gotówka</option>
-            <option value="card">Karta</option>
+        <select id="payment"
+        value={paymentType}
+        onChange={(e) => setPaymentType(e.target.value)}>
+            <option value="gotówka">Gotówka</option>
+            <option value="karta">Karta</option>
         </select>
     </div>
         

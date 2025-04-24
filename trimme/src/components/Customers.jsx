@@ -101,6 +101,7 @@ const Customers = () => {
               <th className="px-2 sm:px-4 py-2">Imię</th>
               <th className="px-2 sm:px-4 py-2">Nazwisko</th>
               <th className="px-2 sm:px-4 py-2">Telefon</th>
+              <th className="px-2 sm:px-4 py-2">Opis</th>
               <th className="px-2 sm:px-4 py-2">Edytuj</th>
               <th className="px-2 sm:px-4 py-2">Usuń</th>
             </tr>
@@ -142,6 +143,18 @@ const Customers = () => {
                     />
                   ) : (
                     customer.phone
+                  )}
+                </td>
+                <td>
+                  {editingCustomerId === customer.id ? (
+                    <input
+                      type="text"
+                      value={editedCustomer?.mainDescription || ""}
+                      onChange={(e) => handleEditChange(e, "mainDescription")}
+                      className="text-center"
+                    />
+                  ) : (
+                    customer.mainDescription
                   )}
                 </td>
                 <td>

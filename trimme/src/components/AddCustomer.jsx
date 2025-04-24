@@ -5,6 +5,7 @@ export default function AddCustomer({ setNewEvent, setEvents, events,formVisible
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [phone, setPhone] = useState(0);
+    const [mainDescription, setMainDescription] = useState("");
     const [errorMsg, setErrorMsg] = useState(null);
 
     const addCustomer = async (event) => {
@@ -48,16 +49,9 @@ export default function AddCustomer({ setNewEvent, setEvents, events,formVisible
           return;
         }
         if (phoneExists) {
-          const userConfirmed = window.confirm(
-            `Numer telefonu ${phoneNumber} już istnieje w bazie. Czy chcesz dodać nowego klienta o tym samym numerze?`
-          );
-        
-    
-          if (!userConfirmed) {
-            return; // Jeśli użytkownik nie wyrazi zgody, nie dodajemy klienta
-          }
+          setErrorMsg("Klient o tym numerze telefonu już istnieje.");
+          return;
         }
-    
         const db = await Database.get();
     
         // Tworzenie nowego klienta
@@ -66,6 +60,7 @@ export default function AddCustomer({ setNewEvent, setEvents, events,formVisible
           name,
           surname,
           phone: phoneNumber,
+          mainDescription,
         };
     
         try {
@@ -76,6 +71,7 @@ export default function AddCustomer({ setNewEvent, setEvents, events,formVisible
           setName("");
           setSurname("");
           setPhone(0);
+          setMainDescription("");
           setFormVisible(false);
           setErrorMsg(null); // Resetowanie komunikatu o błędzie
     
@@ -119,6 +115,16 @@ export default function AddCustomer({ setNewEvent, setEvents, events,formVisible
               className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
             />
               </div>
+              <div className="flex flex-col">
+                <label className="mb-1 text-gray-700">Opis</label>
+            <input
+              type="text"
+              value={mainDescription}
+              onChange={(e) => setMainDescription(e.target.value)}
+              className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
+              </div>
+
               <button className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200">
                 Dodaj klienta
               </button>
