@@ -3,6 +3,7 @@ import VisitFinalization from "./VisitFinalization";
 import VisitEdition from "./VisitEdition";
 import { deleteDoc, doc ,updateDoc} from "firebase/firestore";
 import { firestoreDatabase } from "../Database";
+import LastVisit from "./LastVisit";
 
   export default function VisitManagement({selectedEvent, setEvents, setVisitPreview}) {
     if(!selectedEvent) return null;
@@ -11,6 +12,7 @@ import { firestoreDatabase } from "../Database";
     const [editEvent, setEditEvent] = useState(false);
     const [editedEvent, setEditedEvent] = useState([]);
     const [isCompleted, setIsCompleted] = useState(false);
+    const [lastVisit, setLastVisit] = useState(false);
 
     useEffect(() => {
       if (selectedEvent.status === "zakończona" || selectedEvent.status === "odwołana") {
@@ -73,10 +75,10 @@ import { firestoreDatabase } from "../Database";
 
 
     return (
-      <div className="absolute top-50 left-120 w-fit h-fit bg-pink-200 flex flex-col justify-center items-center z-10">
+      <div className="absolute top-50 left-120 w-fit h-fit bg-white border-3 border-pink-800 flex flex-col justify-center items-center z-10">
+        <h2 className="text-pink-900 text-3xl p-4">Wizyta</h2>
         <div className="flex flex-row">
-        <div className="bg-pink-400 p-4 rounded-md flex flex-col gap-2 items-center">
-              <h2>Wizyta</h2>
+        <div className="bg-gray-100 p-4 rounded-md flex flex-col gap-2 w-[400px]">
               <p>Pracownik: {selectedEvent.employee}</p>
               <p>Klient: {selectedEvent.customer}</p>
               <p>Usługa: {Array.isArray(selectedEvent.services) ? selectedEvent.services.map(s=>s.name).join(", ") : selectedEvent.services.name}
@@ -86,6 +88,12 @@ import { firestoreDatabase } from "../Database";
               <p>Godzina zakończenia: {selectedEvent.endTime}</p>
               <p>Status: {selectedEvent.status}</p>
               <p>Opis: {selectedEvent.mainDescription}</p>
+              <p>
+                <button onClick={(e)=> setLastVisit(!lastVisit)}>Ostatnia wizyta</button>
+              </p>
+              {lastVisit && (
+                <LastVisit customerId={selectedEvent.customerId} />
+              )}
 
           {/*odwoływanie wizyty */}
           {cancelEvent && (

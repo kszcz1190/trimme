@@ -24,6 +24,7 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
   const {services, servSearchTerm, setServices, setServSearchTerm} = SearchService();
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [selectedCustomer, setSelectedCustomer] = useState("");
+  const [customerId, setCustomerId] = useState("");
   const [selectedService, setSelectedService] = useState("");
   const [isDropdownEmpOpen, setIsDropdownEmpOpen] = useState(false);
   const [isDropdownCusOpen, setIsDropdownCusOpen] = useState(false);
@@ -127,6 +128,7 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
       })),
       color: formData.color,
       status: "nadchodząca",
+      customerId: customerId,
     };
 
     try {
@@ -146,11 +148,9 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
         selectedCustomer: "",
         selectedEmployee: "",
         selectedService: "",
-
       });
 
       // Resetowanie stanu
-      
       setSelectedEmployee("");
       setSelectedCustomer("");
       setSelectedService("");
@@ -182,6 +182,7 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
   };
    const handleCustomerSelect = (cus) => {
     setSelectedCustomer(`${cus.name} ${cus.surname}`);
+    setCustomerId(cus.id);
     setIsDropdownCusOpen(false);
   }
   const handleServiceSelect = (id, selectedServ) => {
@@ -220,28 +221,62 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
 
     return (
         <>
-    <div className="p-4 text-xs relative flex flex-col gap-5 w-full overflow-x-auto lg:text-lg md:text-sm sm:text-xs" >
-      <button
-        onClick={() => setNewEvent(false)}
-        className="hover:bg-yellow-500 text-yellow-700 border-yellow-500 font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded"
-      >Anuluj dodawanie wizyty
-      </button>
-      <div className=" max-h-fit opacity-100">
+        <div className="fixed inset-80 bg-white flex items-center justify-center z-50 w-[50%] h-fit border-2 border-pink-500 top-5  rounded-lg shadow-lg">
+    <div className="p-4 text-xs flex flex-col gap-5 w-full overflow-x-auto lg:text-lg md:text-sm sm:text-xs items-center max-h-[90vh] overflow-y-auto" >
+      <h1 className="text-2xl mb-8 text-pink-800">Dodawanie wizyty</h1>
+    <div className="flex flex-row w-full">
+      <div className="flex flex-col w-1/3">
+            <label htmlFor="" >Data</label>
+          <input
+            name="date"
+            value={formData.date}
+            type="date"
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            className="p-2 border border-gray-400 rounded-md mb-4"
+          />
+          </div>
+          
+          <div className="flex flex-col w-1/3">
+            <label htmlFor="">Godzina rozpoczęcia</label>
+          <input
+            name="startTime"
+            value={formData.startTime}
+            type="time"
+            onChange={(e) =>
+              setFormData({ ...formData, startTime: e.target.value })
+            }
+            className="p-2 border border-gray-400 rounded-md mb-4"
+          />
+          
+          </div>
+          
+          <div className="flex flex-col w-1/3">
+           <label htmlFor="">Godzina zakończenia</label>
+          <input
+            name="endTime"
+            value={formData.endTime}
+            type="time"
+            onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+            className="p-2 border border-gray-400 rounded-md mb-4"
+          /> 
+          </div>
+      </div>
+      <div className=" max-h-fit opacity-100 w-full p-5">
        <button
-                 onClick={() => setFormVisible(!formVisible)}
-                 className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-500 text-pink-700 border-pink-500"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded w-1/5`}
-               >
-                 {formVisible ? "Anuluj dodawanie klienta" : "Dodaj klienta"}
-               </button>
-               {
-                 formVisible && (
-                   <AddCustomer 
-                   setFormVisible={setFormVisible} 
-                   setCustomers={setCustomers} 
-                   customers={customers} 
-                   />
-                 )
-               }
+            onClick={() => setFormVisible(!formVisible)}
+            className={`mb-5 bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-500 text-pink-700 border-pink-500"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded w-1/5`}
+          >
+            {formVisible ? "Anuluj" : "Dodaj klienta"}
+          </button>
+          {
+            formVisible && (
+              <AddCustomer 
+              setFormVisible={setFormVisible} 
+              setCustomers={setCustomers} 
+              customers={customers} 
+              />
+            )
+          }
       
       <form onSubmit={handleAddEvent} className="flex flex-col">
       <div className="flex flex-col relative">
@@ -255,7 +290,7 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
         }}
         onFocus={() => setIsDropdownCusOpen(true)}
         onBlur={() => setTimeout(() => setIsDropdownCusOpen(false), 200)} // Opóźnienie na kliknięcie
-        placeholder="Wpisz imię lub nazwisko lub numer telefonu"
+        placeholder="Wpisz imię, nazwisko lub numer telefonu"
         className="p-2 border border-gray-400 rounded-md mb-4"
       />
 
@@ -279,11 +314,11 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
         )}
       </div>
       
-    <div className="flex flex-col p-5 relative" >
-    <h2 className="font-bold">Dodaj usługę:</h2>
+    <div className="flex flex-col py-5 relative" >
+    <h2>Dodaj usługę:</h2>
          {/* Lista usług */}
     {servicesList.map((serv, index) => (
-    <div key={serv.id} className="flex items-center space-x-2 mb-2 relative">
+    <div key={serv.id} className="flex items-center space-x-2 relative">
         <input
             type="text"
             value={serv.selectedService || serv.servSearchTerm}
@@ -293,6 +328,7 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
             placeholder="Wpisz nazwę usługi"
             className="p-2 border border-gray-400 rounded-md w-64"
         />
+        
 
         {isDropdownServOpen === serv.id && services.length > 0 && (
             <ul className="absolute top-12 bg-white border border-gray-300 rounded-md shadow-md max-h-40 overflow-y-auto w-64 z-10">
@@ -329,16 +365,16 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
                 +
             </button>
         )}
+        {/* Przycisk do czyszczenia usług */}
+    
     </div>
-))}
-
-    {/* Przycisk do czyszczenia usług */}
-    <button
+))} 
+<button
         onClick={(e) => {
             e.preventDefault();
             setServicesList([{ id: Date.now(), servSearchTerm: "", selectedService: "" }]);
         }}
-        className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200 mt-4 w-1/5"
+        className="absolute right-10 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200 mt-4 w-1/5"
     >
         Wyczyść usługi
     </button>
@@ -377,49 +413,22 @@ export default function NewEvent({dateAndTime,setNewEvent,events,setEvents}) {
         </ul>
         )}
       </div>
-      <div className="flex flex-row">
-      <div className="flex flex-col w-1/3">
-            <label htmlFor="" >Data</label>
-          <input
-            name="date"
-            value={formData.date}
-            type="date"
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            className="p-2 border border-gray-400 rounded-md mb-4"
-          />
-          </div>
-          
-          <div className="flex flex-col w-1/3">
-            <label htmlFor="">Godzina rozpoczęcia</label>
-          <input
-            name="startTime"
-            value={formData.startTime}
-            type="time"
-            onChange={(e) =>
-              setFormData({ ...formData, startTime: e.target.value })
-            }
-            className="p-2 border border-gray-400 rounded-md mb-4"
-          />
-          
-          </div>
-          
-          <div className="flex flex-col w-1/3">
-           <label htmlFor="">Godzina zakończenia</label>
-          <input
-            name="endTime"
-            value={formData.endTime}
-            type="time"
-            onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
-            className="p-2 border border-gray-400 rounded-md mb-4"
-          /> 
-          </div>
-      </div>
-      <button className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200">
-            Dodaj 
+      <div className="flex flex-row justify-between mt-10">
+        <button
+            onClick={() => setNewEvent(false)}
+            className=" w-1/3 bg-yellow-500 hover:bg-yellow-600 font-semibold text-white py-2 px-4 rounded shadow-md transition duration-200"
+          >Anuluj
           </button>
+        <button className="w-1/3 bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200">
+            Dodaj 
+        </button>
+      </div>
+        
         </form>
       </div>
     </div>
+    </div>
+    
 </>
     )
 }

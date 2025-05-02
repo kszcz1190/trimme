@@ -234,13 +234,17 @@ const Timetable = () => {
   };
   return (
     <>
-    <div className="p-4 text-xs relative flex flex-col gap-5 w-full overflow-x-auto lg:text-lg md:text-sm sm:text-xs">
+    <div className="p-4 text-xs relative flex flex-col gap-5 w-full overflow-x-auto lg:text-lg md:text-sm sm:text-xs items-center">
+    <div className="flex flex-row justify-between items-center w-full">
+       <h1 className="flex text-3xl text-pink-800">Ustalanie grafiku </h1>
     <button
           onClick={() => setFormVisible(!formVisible)}
-          className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-500 text-pink-700 border-pink-500"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded`}
+          className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-900 text-pink-900 border-pink-900"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded`}
         >
           {formVisible ? "Anuluj" : "Dodaj wydarzenie"}
         </button>
+    </div>
+   
         <div className={`transition-all duration-500 overflow-hidden ${formVisible ? "max-h-fit opacity-100" : "max-h-0 opacity-0"}`}>
         <form onSubmit={addEvent} className="flex flex-col">
         <div style={{ padding: "20px" }} className="flex flex-col relative">
@@ -321,7 +325,9 @@ const Timetable = () => {
         </form>
         </div>
         </div>
-      <FullCalendar
+      <div className="shadow-md bg-pink-800 p-4 rounded-lg ">
+        <div className="bg-white p-8 rounded-lg ">
+            <FullCalendar
         locale={"pl"}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"
@@ -339,7 +345,7 @@ const Timetable = () => {
         }}
         allDaySlot={false}
         firstDay={1}
-        slotDuration={"00:15"}
+        slotDuration={"00:30"}
         slotMinTime={"08:00"}
         slotMaxTime={"18:00"}
         slotLabelFormat={{
@@ -355,6 +361,9 @@ const Timetable = () => {
         editable={true} // pozwala na przesuwanie eventów
         events={[...events]}
       />
+          </div>
+        </div>
+      
     </>
   );
 };

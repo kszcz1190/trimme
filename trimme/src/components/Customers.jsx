@@ -65,14 +65,17 @@ const Customers = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center w-full h-full p-4 bg-white rounded-lg ">
-        
+    <div className="bg-gray-100 p-8 rounded-lg relative">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-4xl font-bold">Klienci</h1>
         <button
           onClick={() => setFormVisible(!formVisible)}
-          className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-500 text-pink-700 border-pink-500"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded w-full`}
+          className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-900 text-pink-900 border-pink-900"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded`}
         >
-          {formVisible ? "Anuluj" : "Dodaj klienta"}
+          {formVisible ? "Anuluj" : "Dodaj"}
         </button>
+      </div>      
+      <div className="flex flex-col items-center justify-center w-full h-full p-4 rounded-lg bg-white">
         {
           formVisible && (
             <AddCustomer 
@@ -94,9 +97,9 @@ const Customers = () => {
             className="p-2 border border-gray-400 rounded-md mb-4"
           /> 
       </div>
-    
-    <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black">
-          <thead className="lg:text-lg md:text-sm sm:text-xs text-gray-500 uppercase border-b border-gray-300">
+    <div className="overflow-y-auto h-[60vh] rounded-2xl shadow-lg w-full">
+    <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black bg-whte">
+          <thead className="lg:text-lg md:text-sm sm:text-xs bg-gray-200 text-black border-b border-gray-300 sticky top-0 z-10">
             <tr>
               <th className="px-2 sm:px-4 py-2">Imię</th>
               <th className="px-2 sm:px-4 py-2">Nazwisko</th>
@@ -108,8 +111,8 @@ const Customers = () => {
           </thead>
           <tbody>
             {customers.map((customer) => (
-              <tr key={customer.id} className="hover:bg-pink-50 ">
-                <td>
+              <tr key={customer.id} className="hover:bg-gray-50 border-b border-gray-300 text-sm">
+                <td className="p-4">
                   {editingCustomerId === customer.id ? (
                     <input
                       type="text"
@@ -174,8 +177,9 @@ const Customers = () => {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
-            
+      </div>
     </>
   );
 }

@@ -58,6 +58,7 @@ function Scheduler() {
             employee_id: doc.data().employee,
             service_id: doc.data().services.filter((service) => service !== ""),
           },
+          customerId: doc.data().customerId,
         }));
   
         console.log("Załadowane wydarzenia:", eventsList);
@@ -99,6 +100,7 @@ function Scheduler() {
       status: existingEvent?.status || "",
       mainDescription: existingEvent?.mainDescription || "",
       extraDescription: existingEvent?.extraDescription || "",
+      customerId: existingEvent?.customerId || "",
 
     };
   
@@ -172,8 +174,8 @@ function Scheduler() {
           />
         )
       } 
-
-      {
+      
+        {
         newEvent && (
           <NewEvent 
           dateAndTime={dateAndTime}
@@ -182,8 +184,10 @@ function Scheduler() {
           setEvents={setEvents}
           />
       )}
-     
-      <FullCalendar
+     <h1 className="flex text-3xl text-pink-800 mb-10">Ustalanie wizyt</h1>
+     <div className="shadow-md bg-pink-800 p-4 rounded-lg ">
+      <div className="bg-white p-8 rounded-lg ">
+        <FullCalendar
         locale={"pl"}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"
@@ -218,6 +222,10 @@ function Scheduler() {
         editable={true} 
         events={[...events]}
       />
+      </div>
+      
+     </div>
+      
     </>
   );
 }

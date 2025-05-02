@@ -135,16 +135,22 @@ const Services = () => {
 
   return (
     <>
-      <div className="p-4 text-xs relative flex flex-col gap-5 w-full overflow-x-auto lg:text-lg md:text-sm sm:text-xs">
-        <button
-          onClick={() => setFormVisible(!formVisible)}
-          className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-500 text-pink-700 border-pink-500"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded`}
-        >
-          {formVisible ? "Anuluj" : "Dodaj usługę"}
-        </button>
+      <div className="bg-gray-100 p-8 rounded-lg relative">
+      <div className="flex justify-between items-center mb-4">
+          <h1 className="text-4xl font-bold">Usługi</h1>
+          <button
+            onClick={() => setFormVisible(!formVisible)}
+            className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-900 text-pink-900 border-pink-900"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded`}
+          >
+            {formVisible ? "Anuluj" : "Dodaj"}
+          </button>
+        </div>    
+      <div className="flex flex-col items-center justify-center w-full h-full p-4 rounded-lg bg-white">  
       <div className={`transition-all duration-500 overflow-hidden ${formVisible ? "max-h-fit opacity-100" : "max-h-0 opacity-0"}`}>
         <form onSubmit={addService} className="flex flex-col gap-4 w-full max-w-md mx-auto bg-white shadow-md rounded-lg p-4">
-          <div className="flex flex-col">
+        <div className="flex flex-row">
+          <div className="flex flex-col p-5">
+           <div className="flex flex-col">
             <label className="mb-1 text-gray-700">Nazwa usługi</label>
             <input
             name="name"
@@ -194,26 +200,30 @@ const Services = () => {
             className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
           />
           </div>
-          
+          </div>
+        </div>
           <button className="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded shadow-md transition duration-200">
             Dodaj usługę
           </button>
           {errorMsg && <p className="text-red-500 text-sm">{errorMsg}</p>}
+        
         </form>
       </div>
-      <div className="flex flex-col w-full bg-white rounded-lg ">
+
+      <div className="flex flex-col relative w-full p-4 ">
         <label className="text-gray-700">Wyszukaj usługę</label>
         <input
             type="text"
             value={servSearchTerm}
             onChange={(e) => setServSearchTerm(e.target.value)}
             placeholder="Wpisz nazwę usługi"
-            className="p-2 border border-gray-400 rounded-md"
-        />
-      </div>
-      <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black">
-          <thead className="lg:text-lg md:text-sm sm:text-xs text-gray-500 uppercase border-b border-gray-300">
-            <tr>
+            className="p-2 border border-gray-400 rounded-md mb-4"
+      />
+    </div>
+    <div className="overflow-y-auto h-[60vh] rounded-2xl shadow-lg w-full">
+      <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black bg-whte">
+          <thead className="lg:text-lg md:text-sm sm:text-xs bg-gray-200 text-black border-b border-gray-300 sticky top-0 z-10">
+           <tr>
               <th className="px-2 sm:px-4 py-2">Nazwa usługi</th>
               <th className="px-2 sm:px-4 py-2">Opis</th>
               <th className="px-2 sm:px-4 py-2">Przedział cenowy</th>
@@ -224,11 +234,9 @@ const Services = () => {
           </thead>
           <tbody>
             {services.map((service) => (
-              <tr
-                className="hover:bg-pink-50"
-                key={service.id}
-              >
-                <td>
+              <tr key={service.id}
+              className="hover:bg-gray-50 border-b border-gray-300 text-sm">
+                <td className="p-4"> 
                   {editingServiceId === service.id ? (
                     <input
                       type="text"
@@ -303,6 +311,8 @@ const Services = () => {
             ))}
           </tbody>
         </table>
+        </div>
+      </div>
       </div>
     </>
   );

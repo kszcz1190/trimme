@@ -139,13 +139,17 @@ const Employees = () => {
 
   return (
     <>
-   <div className="p-4 text-xs relative flex flex-col gap-5 w-full overflow-x-auto lg:text-lg md:text-sm sm:text-xs">
+   <div className="bg-gray-100 p-8 rounded-lg relative">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-4xl font-bold">Pracownicy</h1>
         <button
           onClick={() => setFormVisible(!formVisible)}
-          className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-500 text-pink-700 border-pink-500"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded`}
+          className={`bg-transparent ${formVisible ? "hover:bg-yellow-500 text-yellow-700 border-yellow-500" : "hover:bg-pink-900 text-pink-900 border-pink-900"} font-semibold hover:text-white py-2 px-4 border hover:border-transparent rounded`}
         >
-          {formVisible ? "Anuluj" : "Dodaj pracownika"}
+          {formVisible ? "Anuluj" : "Dodaj"}
         </button>
+      </div>      
+      <div className="flex flex-col items-center justify-center w-full h-full p-4 rounded-lg bg-white">
       <div className={`transition-all duration-500 overflow-hidden ${formVisible ? "max-h-fit opacity-100" : "max-h-0 opacity-0"}`}>
         <form onSubmit={addEmployee} className="flex flex-col gap-4 w-fit mx-auto bg-white shadow-md rounded-lg p-4">
           <div className="flex flex-row">
@@ -241,7 +245,7 @@ const Employees = () => {
       </form>
     </div>
 
-    <div className="flex flex-col relative w-full ">
+    <div className="flex flex-col w-full relative p-4">
       <label htmlFor="employeeSearch">Wyszukaj pracownika</label>
       <input
         type="text"
@@ -253,9 +257,10 @@ const Employees = () => {
         className="p-2 border border-gray-400 rounded-md mb-4"
       />
     </div>
-    <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black">
-          <thead className="lg:text-lg md:text-sm sm:text-xs text-gray-500 uppercase border-b border-gray-300">
-            <tr>
+    <div className="overflow-y-auto h-[60vh] rounded-2xl shadow-lg w-full">
+      <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black bg-whte">
+          <thead className="lg:text-lg md:text-sm sm:text-xs bg-gray-200 text-black border-b border-gray-300 sticky top-0 z-10">
+           <tr>
                <th className="px-2 sm:px-4 py-2">Imię</th>
                <th className="px-2 sm:px-4 py-2">Nazwisko</th>
                <th className="px-2 sm:px-4 py-2">Telefon</th>
@@ -271,14 +276,14 @@ const Employees = () => {
           <tbody>
             {employees.map((employee) => (
               <tr key={employee.id}
-              className="hover:bg-pink-50">
-                <td>
+              className="hover:bg-gray-50 border-b border-gray-300 text-sm">
+                <td className="p-4">
                   {editingEmployeeId === employee.id ? (
                     <input
                       type="text"
                       value={editedEmployee?.name || ""}
                       onChange={(e) => handleEditChange(e, "name")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.name
@@ -290,7 +295,7 @@ const Employees = () => {
                       type="text"
                       value={editedEmployee?.surname || ""}
                       onChange={(e) => handleEditChange(e, "surname")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.surname
@@ -302,7 +307,7 @@ const Employees = () => {
                       type="number"
                       value={editedEmployee?.tel || ""}
                       onChange={(e) => handleEditChange(e, "tel")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.tel
@@ -314,7 +319,7 @@ const Employees = () => {
                       type="number"
                       value={editedEmployee?.pesel || ""}
                       onChange={(e) => handleEditChange(e, "pesel")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.pesel
@@ -326,7 +331,7 @@ const Employees = () => {
                       type="text"
                       value={editedEmployee?.address || ""}
                       onChange={(e) => handleEditChange(e, "address")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.address
@@ -338,7 +343,7 @@ const Employees = () => {
                       type="text"
                       value={editedEmployee?.description || ""}
                       onChange={(e) => handleEditChange(e, "description")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.description
@@ -350,7 +355,7 @@ const Employees = () => {
                       type="checkbox"
                       checked={editedEmployee?.supervisor || false}
                       onChange={(e) => handleEditChange(e, "supervisor")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.supervisor ? "Tak" : "Nie"
@@ -362,7 +367,7 @@ const Employees = () => {
                       type="color"
                       value={editedEmployee?.color || ""}
                       onChange={(e) => handleEditChange(e, "color")}
-                      className="text-center w-[90%]"
+                      className="text-center"
                     />
                   ) : (
                     employee.color
@@ -385,6 +390,8 @@ const Employees = () => {
             ))}
           </tbody>
         </table>
+        </div>
+        </div>
     </div>
 </>
   );

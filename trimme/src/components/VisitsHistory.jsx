@@ -93,8 +93,9 @@ const VisitsHistory = () => {
   }
 
   return (
-    <div className="visits-history flex flex-col items-center">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-4">
+    <div className="bg-gray-100 p-8 rounded-lg relative">
+      <h1 className="text-4xl font-bold mb-4">Historia wizyt</h1>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 my-4 bg-white p-4 rounded-lg ">
         <div className="flex flex-col items-center">
           <label>Data</label>
           <div className="flex flex-row items-center gap-2">
@@ -157,9 +158,10 @@ const VisitsHistory = () => {
         />
       </div>
     </div>
-      <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black mt-6">
-        <thead className="text-gray-500 uppercase border-b border-gray-300">
-          <tr>
+    <div className="overflow-y-auto h-[60vh] rounded-2xl shadow-lg w-full">
+      <table className="w-full lg:text-lg md:text-sm sm:text-xs text-center text-black bg-whte">
+          <thead className="lg:text-lg md:text-sm sm:text-xs bg-gray-200 text-black border-b border-gray-300 sticky top-0 z-10">
+           <tr>
             <th>Data</th>
             <th>Godzina</th>
             <th>Klient</th>
@@ -172,8 +174,9 @@ const VisitsHistory = () => {
         </thead>
         <tbody>
           {filteredVisits.map((visit) => (
-            <tr key={visit.id} className="hover:bg-pink-50">
-              <td>
+            <tr key={visit.id} 
+            className="hover:bg-gray-50 border-b border-gray-300 text-sm">
+              <td className="p-4">
                 {editingVisitId === visit.id ? (
                   <input
                 type="date"
@@ -251,6 +254,7 @@ const VisitsHistory = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };
